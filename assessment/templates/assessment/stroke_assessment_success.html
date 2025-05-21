@@ -1,0 +1,13 @@
+{# django_projects/assessment/templates/assessment/stroke_assessment_success.html #}
+{% extends 'base.html' %}
+
+{% block title %}Assessment Saved!{% endblock %}
+
+{% block content %}
+    <h1>Assessment Saved!</h1>
+    <p>Stroke assessment for Patient ID: {{ patient.id }} has been successfully recorded.</p>
+    <p><a href="{% url 'assessment:assessment_detail' patient.id assessment.id %}">View Assessment Details</a></p>
+    <p><a href="{% url 'assessment:patient_list' %}">View All Patients</a></p>
+    <p><a href="/admin/assessment/strokeassessment/">View All Assessments in Admin</a></p>
+    <p><a href="/admin/assessment/patient/">View All Patients in Admin</a></p>
+{% endblock %}

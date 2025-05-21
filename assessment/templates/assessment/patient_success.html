@@ -1,0 +1,12 @@
+{# django_projects/assessment/templates/assessment/patient_success.html #}
+{% extends 'base.html' %}
+
+{% block title %}Patient Saved!{% endblock %}
+
+{% block content %}
+    <h1>Patient Saved!</h1>
+    <p>Patient data for Patient ID: {{ patient.id }} has been saved successfully.</p>
+    <p><a href="{% url 'assessment:stroke_assessment_form' patient.id %}">Proceed to Stroke Assessment for this Patient</a></p>
+    <p><a href="{% url 'assessment:patient_list' %}">View All Patients</a></p>
+    <p><a href="/admin/">Go to Admin Panel</a></p>
+{% endblock %}

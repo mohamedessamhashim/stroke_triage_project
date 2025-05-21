@@ -1,0 +1,197 @@
+{# django_projects/assessment/templates/assessment/stroke_assessment_form.html #}
+{% extends 'base.html' %}
+
+{% block title %}Stroke Assessment for Patient {{ patient.id }}{% endblock %}
+
+{% block content %}
+    <h1>Stroke Assessment for Patient: {{ patient.id }} (Age: {{ patient.age }})</h1>
+    <p>Arrival Time: {{ patient.arrival_time|date:"Y-m-d H:i" }}</p>
+    <form method="post">
+        {% csrf_token %}
+
+        <h2>BE-FAST+ Assessment</h2>
+        <div>
+            {{ form.be_fast_balance.label_tag }}
+            {{ form.be_fast_balance }}
+            <span class="checkbox-label">{{ form.be_fast_balance.help_text }}</span>
+        </div>
+        <div>
+            {{ form.be_fast_eyes.label_tag }}
+            {{ form.be_fast_eyes }}
+            <span class="checkbox-label">{{ form.be_fast_eyes.help_text }}</span>
+        </div>
+        <div>
+            {{ form.be_fast_face_drooping.label_tag }}
+            {{ form.be_fast_face_drooping }}
+            <span class="checkbox-label">{{ form.be_fast_face_drooping.help_text }}</span>
+        </div>
+        <div>
+            {{ form.be_fast_arm_weakness.label_tag }}
+            {{ form.be_fast_arm_weakness }}
+            <span class="checkbox-label">{{ form.be_fast_arm_weakness.help_text }}</span>
+        </div>
+        <div>
+            {{ form.be_fast_speech_difficulty.label_tag }}
+            {{ form.be_fast_speech_difficulty }}
+            <span class="checkbox-label">{{ form.be_fast_speech_difficulty.help_text }}</span>
+        </div>
+        <div>
+            {{ form.be_fast_time_to_call.label_tag }}
+            {{ form.be_fast_time_to_call }}
+            <span class="checkbox-label">{{ form.be_fast_time_to_call.help_text }}</span>
+        </div>
+        <div>
+            {{ form.be_fast_plus_other.label_tag }}
+            {{ form.be_fast_plus_other }}
+            <span class="checkbox-label">{{ form.be_fast_plus_other.help_text }}</span>
+        </div>
+
+        <h2>Modified NIHSS Components</h2>
+        {{ form.nihss_1a_loc_alert.errors }}
+        <div>
+            {{ form.nihss_1a_loc_alert.label_tag }}
+            {{ form.nihss_1a_loc_alert }}
+            {% if form.nihss_1a_loc_alert.help_text %}<span class="helptext">{{ form.nihss_1a_loc_alert.help_text }}</span>{% endif %}
+        </div>
+        {{ form.nihss_1b_loc_questions.errors }}
+        <div>
+            {{ form.nihss_1b_loc_questions.label_tag }}
+            {{ form.nihss_1b_loc_questions }}
+            {% if form.nihss_1b_loc_questions.help_text %}<span class="helptext">{{ form.nihss_1b_loc_questions.help_text }}</span>{% endif %}
+        </div>
+        {{ form.nihss_1c_loc_commands.errors }}
+        <div>
+            {{ form.nihss_1c_loc_commands.label_tag }}
+            {{ form.nihss_1c_loc_commands }}
+            {% if form.nihss_1c_loc_commands.help_text %}<span class="helptext">{{ form.nihss_1c_loc_commands.help_text }}</span>{% endif %}
+        </div>
+        {{ form.nihss_2_best_gaze.errors }}
+        <div>
+            {{ form.nihss_2_best_gaze.label_tag }}
+            {{ form.nihss_2_best_gaze }}
+            {% if form.nihss_2_best_gaze.help_text %}<span class="helptext">{{ form.nihss_2_best_gaze.help_text }}</span>{% endif %}
+        </div>
+        {{ form.nihss_3_visual_field.errors }}
+        <div>
+            {{ form.nihss_3_visual_field.label_tag }}
+            {{ form.nihss_3_visual_field }}
+            {% if form.nihss_3_visual_field.help_text %}<span class="helptext">{{ form.nihss_3_visual_field.help_text }}</span>{% endif %}
+        </div>
+        {{ form.nihss_4_facial_palsy.errors }}
+        <div>
+            {{ form.nihss_4_facial_palsy.label_tag }}
+            {{ form.nihss_4_facial_palsy }}
+            {% if form.nihss_4_facial_palsy.help_text %}<span class="helptext">{{ form.nihss_4_facial_palsy.help_text }}</span>{% endif %}
+        </div>
+        {{ form.nihss_5a_motor_left_arm.errors }}
+        <div>
+            {{ form.nihss_5a_motor_left_arm.label_tag }}
+            {{ form.nihss_5a_motor_left_arm }}
+            {% if form.nihss_5a_motor_left_arm.help_text %}<span class="helptext">{{ form.nihss_5a_motor_left_arm.help_text }}</span>{% endif %}
+        </div>
+        {{ form.nihss_5b_motor_right_arm.errors }}
+        <div>
+            {{ form.nihss_5b_motor_right_arm.label_tag }}
+            {{ form.nihss_5b_motor_right_arm }}
+            {% if form.nihss_5b_motor_right_arm.help_text %}<span class="helptext">{{ form.nihss_5b_motor_right_arm.help_text }}</span>{% endif %}
+        </div>
+        {{ form.nihss_6a_motor_left_leg.errors }}
+        <div>
+            {{ form.nihss_6a_motor_left_leg.label_tag }}
+            {{ form.nihss_6a_motor_left_leg }}
+            {% if form.nihss_6a_motor_left_leg.help_text %}<span class="helptext">{{ form.nihss_6a_motor_left_leg.help_text }}</span>{% endif %}
+        </div>
+        {{ form.nihss_6b_motor_right_leg.errors }}
+        <div>
+            {{ form.nihss_6b_motor_right_leg.label_tag }}
+            {{ form.nihss_6b_motor_right_leg }}
+            {% if form.nihss_6b_motor_right_leg.help_text %}<span class="helptext">{{ form.nihss_6b_motor_right_leg.help_text }}</span>{% endif %}
+        </div>
+        {{ form.nihss_7_limb_ataxia.errors }}
+        <div>
+            {{ form.nihss_7_limb_ataxia.label_tag }}
+            {{ form.nihss_7_limb_ataxia }}
+            {% if form.nihss_7_limb_ataxia.help_text %}<span class="helptext">{{ form.nihss_7_limb_ataxia.help_text }}</span>{% endif %}
+        </div>
+        {{ form.nihss_8_sensory.errors }}
+        <div>
+            {{ form.nihss_8_sensory.label_tag }}
+            {{ form.nihss_8_sensory }}
+            {% if form.nihss_8_sensory.help_text %}<span class="helptext">{{ form.nihss_8_sensory.help_text }}</span>{% endif %}
+        </div>
+        {{ form.nihss_9_best_language.errors }}
+        <div>
+            {{ form.nihss_9_best_language.label_tag }}
+            {{ form.nihss_9_best_language }}
+            {% if form.nihss_9_best_language.help_text %}<span class="helptext">{{ form.nihss_9_best_language.help_text }}</span>{% endif %}
+        </div>
+        {{ form.nihss_10_dysarthria.errors }}
+        <div>
+            {{ form.nihss_10_dysarthria.label_tag }}
+            {{ form.nihss_10_dysarthria }}
+            {% if form.nihss_10_dysarthria.help_text %}<span class="helptext">{{ form.nihss_10_dysarthria.help_text }}</span>{% endif %}
+        </div>
+        {{ form.nihss_11_extinction_inattention.errors }}
+        <div>
+            {{ form.nihss_11_extinction_inattention.label_tag }}
+            {{ form.nihss_11_extinction_inattention }}
+            {% if form.nihss_11_extinction_inattention.help_text %}<span class="helptext">{{ form.nihss_11_extinction_inattention.help_text }}</span>{% endif %}
+        </div>
+
+        <h2>Imaging Findings</h2>
+        {{ form.ct_scan_time.errors }}
+        <div>
+            {{ form.ct_scan_time.label_tag }}
+            {{ form.ct_scan_time }}
+            {% if form.ct_scan_time.help_text %}<span class="helptext">{{ form.ct_scan_time.help_text }}</span>{% endif %}
+        </div>
+        {{ form.hemorrhage_present.errors }}
+        <div>
+            {{ form.hemorrhage_present.label_tag }}
+            {{ form.hemorrhage_present }}
+            <span class="checkbox-label">{{ form.hemorrhage_present.help_text }}</span>
+        </div>
+        {{ form.aspects_score.errors }}
+        <div>
+            {{ form.aspects_score.label_tag }}
+            {{ form.aspects_score }}
+            {% if form.aspects_score.help_text %}<span class="helptext">{{ form.aspects_score.help_text }}</span>{% endif %}
+        </div>
+
+        <h2>Large Vessel Occlusion (LVO) Details</h2>
+        {{ form.lvo_status.errors }}
+        <div>
+            {{ form.lvo_status.label_tag }}
+            {{ form.lvo_status }}
+            {% if form.lvo_status.help_text %}<span class="helptext">{{ form.lvo_status.help_text }}</span>{% endif %}
+        </div>
+        {{ form.lvo_location.errors }}
+        <div>
+            {{ form.lvo_location.label_tag }}
+            {{ form.lvo_location }}
+            {% if form.lvo_location.help_text %}<span class="helptext">{{ form.lvo_location.help_text }}</span>{% endif %}
+        </div>
+
+        <h2>Treatment Decisions and Eligibility</h2>
+        {{ form.tpa_eligibility.errors }}
+        <div>
+            {{ form.tpa_eligibility.label_tag }}
+            {{ form.tpa_eligibility }}
+            {% if form.tpa_eligibility.help_text %}<span class="helptext">{{ form.tpa_eligibility.help_text }}</span>{% endif %}
+        </div>
+        {{ form.thrombectomy_eligibility.errors }}
+        <div>
+            {{ form.thrombectomy_eligibility.label_tag }}
+            {{ form.thrombectomy_eligibility }}
+            {% if form.thrombectomy_eligibility.help_text %}<span class="helptext">{{ form.thrombectomy_eligibility.help_text }}</span>{% endif %}
+        </div>
+        {{ form.treatment_recommendation.errors }}
+        <div>
+            {{ form.treatment_recommendation.label_tag }}
+            {{ form.treatment_recommendation }}
+            {% if form.treatment_recommendation.help_text %}<span class="helptext">{{ form.treatment_recommendation.help_text }}</span>{% endif %}
+        </div>
+
+        <button type="submit">Submit Assessment</button>
+    </form>
+{% endblock %}

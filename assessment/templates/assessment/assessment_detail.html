@@ -1,0 +1,138 @@
+{# django_projects/assessment/templates/assessment/assessment_detail.html #}
+{% extends 'base.html' %}
+
+{% block title %}Assessment Details for Patient {{ patient.id }}{% endblock %}
+
+{% block content %}
+    <h1>Assessment Details for Patient ID: {{ patient.id }}</h1>
+    <p><strong>Assessment ID:</strong> {{ assessment.id }}</p>
+    <p><strong>Assessment Time:</strong> {{ assessment.assessment_time|date:"Y-m-d H:i:s" }}</p>
+
+    <h2>Patient Information</h2>
+    <p><strong>Arrival Time:</strong> {{ patient.arrival_time|date:"Y-m-d H:i" }}</p>
+    <p><strong>Last Known Well Time:</strong> {% if patient.last_known_well_time %}{{ patient.last_known_well_time|date:"Y-m-d H:i" }}{% else %}N/A{% endif %}</p>
+    <p><strong>Age:</strong> {{ patient.age }} years</p>
+    <p><strong>Weight:</strong> {{ patient.weight_kg }} kg</p>
+    <p><strong>Blood Pressure:</strong> {{ patient.systolic_bp }}/{{ patient.diastolic_bp }} mmHg</p>
+    <p><strong>Blood Glucose:</strong> {{ patient.blood_glucose }}</p>
+    <p><strong>Anticoagulant Status:</strong> {{ patient.get_anticoagulant_status_display }}</p>
+    {% if patient.anticoagulant_medication %}
+        <p><strong>Anticoagulant Medication:</strong> {{ patient.anticoagulant_medication }}</p>
+    {% endif %}
+    {% if patient.last_anticoagulant_dose %}
+        <p><strong>Last Anticoagulant Dose:</strong> {{ patient.last_anticoagulant_dose|date:"Y-m-d H:i" }}</p>
+    {% endif %}
+
+    <h2>Time-Based Calculations</h2> {# NEW SECTION START #}
+    {% if patient.last_known_well_time %}
+        <p><strong>Time Since Last Known Well:</strong>
+            {% if assessment.get_time_since_lkw_hours %}
+                {{ assessment.get_time_since_lkw_hours }} hours
+            {% else %}
+                N/A (Error in calculation or LKW is after assessment)
+            {% endif %}
+        </p>
+        <p><strong>Within tPA Window (4.5 hrs):</strong> {{ assessment.is_within_tpa_window|yesno:"Yes,No" }}</p>
+        <p><strong>Within Thrombectomy Window (6 hrs):</strong> {{ assessment.is_within_thrombectomy_window|yesno:"Yes,No" }}</p>
+    {% else %}
+        <p>Last Known Well Time not provided for this patient, time calculations not available.</p>
+    {% endif %}
+    {# NEW SECTION END #}
+
+    <h2>BE-FAST+ Assessment</h2>
+    <ul>
+        <li>Balance: {{ assessment.be_fast_balance|yesno:"Yes,No" }}</li>
+        <li>Eyes: {{ assessment.be_fast_eyes|yesno:"Yes,No" }}</li>
+        <li>Face Drooping: {{ assessment.be_fast_face_drooping|yesno:"Yes,No" }}</li>
+        <li>Arm Weakness: {{ assessment.be_fast_arm_weakness|yesno:"Yes,No" }}</li>
+        <li>Speech Difficulty: {{ assessment.be_fast_speech_difficulty|yesno:"Yes,No" }}</li>
+        <li>Time to Call: {{ assessment.be_fast_time_to_call|yesno:"Yes,No" }}</li>
+        <li>Other Symptoms: {{ assessment.be_fast_plus_other|yesno:"Yes,No" }}</li>
+    </ul>
+
+    <h2>Modified NIHSS Components</h2>
+    <ul>
+        <li>LOC Alertness: {{ assessment.nihss_1a_loc_alert|default:"N/A" }}</li>
+        <li>LOC Questions: {{ assessment.nihss_1b_loc_questions|default:"N/A" }}</li>
+        <li>LOC Commands: {{ assessment.nihss_1c_loc_commands|default:"N/A" }}</li>
+        <li>Best Gaze: {{ assessment.nihss_2_best_gaze|default:"N/A" }}</li>
+        <li>Visual Field: {{ assessment.nihss_3_visual_field|default:"N/A" }}</li>
+        <li>Facial Palsy: {{ assessment.nihss_4_facial_palsy|default:"N/A" }}</li>
+        <li>Motor Left Arm: {{ assessment.nihss_5a_motor_left_arm|default:"N/A" }}</li>
+        <li>Motor Right Arm: {{ assessment.nihss_5b_motor_right_arm|default:"N/A" }}</li>
+        <li>Motor Left Leg: {{ assessment.nihss_6a_motor_left_leg|default:"N/A" }}</li>
+        <li>Motor Right Leg: {{ assessment.nihss_6b_motor_right_leg|default:"N/A" }}</li>
+        <li>Limb Ataxia: {{ assessment.nihss_7_limb_ataxia|default:"N/A" }}</li>
+        <li>Sensory: {{ assessment.nihss_8_sensory|default:"N/A" }}</li>
+        <li>Best Language: {{ assessment.nihss_9_best_language|default:"N/A" }}</li>
+        <li>Dysarthria: {{ assessment.nihss_10_dysarthria|default:"N/A" }}</li>
+        <li>Extinction & Inattention: {{ assessment.nihss_11_extinction_inattention|default:"N/A" }}</li>
+    </ul>
+
+    <h2>Clinical Scores</h2> {# NEW SECTION START #}
+    <p><strong>NIHSS Total Score:</strong>
+        {% if assessment.calculate_nihss_total_score is not None %}
+            {{ assessment.calculate_nihss_total_score }}
+        {% else %}
+            N/A (Missing NIHSS components)
+        {% endif %}
+    </p>
+    <p><strong>RACE Score for LVO Prediction:</strong>
+        {% if assessment.calculate_race_score is not None %}
+            {{ assessment.calculate_race_score }}
+        {% else %}
+            N/A (Missing RACE components)
+        {% endif %}
+    </p>
+    <p><strong>ASPECTS Score Interpretation:</strong> {{ assessment.get_aspects_interpretation }}</p>
+    {# NEW SECTION END #}
+
+    <h2>Imaging Findings</h2>
+    <p><strong>CT Scan Time:</strong> {% if assessment.ct_scan_time %}{{ assessment.ct_scan_time|date:"Y-m-d H:i" }}{% else %}N/A{% endif %}</p>
+    <p><strong>Hemorrhage Present:</strong> {{ assessment.hemorrhage_present|yesno:"Yes,No" }}</p>
+    <p><strong>ASPECTS Score:</strong> {{ assessment.aspects_score|default:"N/A" }}</p>
+
+    <h2>Large Vessel Occlusion (LVO) Details</h2>
+    <p><strong>LVO Status:</strong> {{ assessment.get_lvo_status_display }}</p>
+    {% if assessment.lvo_location %}
+        <p><strong>LVO Location:</strong> {{ assessment.lvo_location }}</p>
+    {% endif %}
+
+    <h2>Treatment Decisions and Eligibility</h2>
+    <p><strong>tPA Eligibility Status:</strong> {{ assessment.get_tpa_eligibility_status }}</p>
+    {% if assessment.get_tpa_eligibility_status == "Potentially Eligible" %}
+        <p><strong>Calculated tPA Dose:</strong>
+            {% if assessment.calculate_tpa_dose is not None %}
+                {{ assessment.calculate_tpa_dose|floatformat:"2" }} mg (0.9 mg/kg, max 90mg)
+            {% else %}
+                N/A (Patient weight missing)
+            {% endif %}
+        </p>
+    {% endif %}
+    <p><strong>Thrombectomy Candidacy:</strong> {{ assessment.get_thrombectomy_candidacy }}</p>
+    <p><strong>Blood Pressure Management Target:</strong> {{ assessment.get_bp_management_target }}</p>
+
+    {# The original form fields for eligibility can still be shown if needed for manual override/initial assessment #}
+    {# <p><strong>tPA Eligibility (Manual):</strong> {{ assessment.get_tpa_eligibility_display }}</p> #}
+    {# <p><strong>Thrombectomy Eligibility (Manual):</strong> {{ assessment.get_thrombectomy_eligibility_display }}</p> #}
+    {% if assessment.treatment_recommendation %}
+        <p><strong>Treatment Recommendation (Manual):</strong> {{ assessment.treatment_recommendation|linebreaksbr }}</p>
+    {% endif %}
+    <h2>Decision Support</h2> {# NEW SECTION START #}
+    <p><strong>Recommended Stroke Center:</strong> {{ assessment.get_stroke_center_recommendation }}</p>
+    <p><strong>Transfer Recommendation:</strong> {{ assessment.get_transfer_recommendation }}</p>
+    <h3>Critical Time Targets (from Patient Arrival)</h3>
+    {% with critical_targets=assessment.get_critical_time_targets %}
+        {% if critical_targets %}
+            <ul>
+                {% for target_name, target_time in critical_targets.items %}
+                    <li><strong>{{ target_name }}:</strong> {{ target_time }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Arrival time not available for critical time targets.</p>
+        {% endif %}
+    {% endwith %}
+    <p><a href="{% url 'assessment:stroke_assessment_form' patient.id %}">Add Another Assessment for this Patient</a></p>
+    <p><a href="{% url 'assessment:patient_list' %}">Back to Patient List</a></p>
+{% endblock %}

@@ -1,0 +1,39 @@
+{# django_projects/assessment/templates/assessment/patient_list.html #}
+{% extends 'base.html' %}
+
+{% block title %}All Patients{% endblock %}
+
+{% block content %}
+    <h1>All Patients</h1>
+    <p><a href="{% url 'assessment:patient_form' %}">Add New Patient</a></p>
+
+    {% if patients %}
+        {% for patient in patients %}
+            <div class="patient-card">
+                <div class="patient-card-details">
+                    <h3>Patient ID: {{ patient.id }}</h3>
+                    <p>Age: {{ patient.age }} | Weight: {{ patient.weight_kg }} kg</p>
+                    <p>Arrival: {{ patient.arrival_time|date:"Y-m-d H:i" }}</p>
+                    {% if patient.last_known_well_time %}
+                        <p>Last Known Well: {{ patient.last_known_well_time|date:"Y-m-d H:i" }}</p>
+                    {% endif %}
+                </div>
+                <div class="patient-card-actions">
+                    <a href="{% url 'assessment:stroke_assessment_form' patient.id %}">Add Assessment</a>
+                    {# Link to view existing assessments for this patient #}
+                    {# This assumes a patient might have multiple assessments, and we're showing the latest one #}
+                    {% if patient.assessments.first %} {# Access the first (latest due to ordering in model) assessment #}
+                        <a href="{% url 'assessment:assessment_detail' patient.id patient.assessments.first.id %}">
+                            View Latest Assessment
+                        </a>
+                    {% else %}
+                        <a href="#" style="pointer-events: none; opacity: 0.5;">No Assessments</a>
+                    {% endif %}
+                    <a href="{% url 'assessment:patient_delete' patient.id %}" style="background-color: #dc3545;">Delete Patient</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No patients registered yet. <a href="{% url 'assessment:patient_form' %}">Add the first patient!</a></p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,14 @@
+{# django_projects/assessment/templates/assessment/patient_form.html #}
+{% extends 'base.html' %} {# This line tells Django to use base.html as the parent template #}
+
+{% block title %}New Patient Data Entry{% endblock %} {# This sets the specific title for this page #}
+
+{% block content %} {# All content specific to this page goes inside this block #}
+    <h1>New Patient Assessment</h1>
+    <form method="post">
+        {% csrf_token %} {# Django's security token for forms #}
+        {{ form.as_p }} {# Renders each form field as a paragraph #}
+        <button type="submit">Submit Patient Data</button>
+    </form>
+{% endblock %}
+
