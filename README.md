@@ -145,7 +145,7 @@ If you'd like to contribute to this project, please feel free to fork the reposi
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details (if you plan to add one).
+This project is licensed under the MIT License.
 
 ## Contact
 
