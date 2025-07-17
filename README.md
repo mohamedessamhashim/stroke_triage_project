@@ -1,4 +1,6 @@
-# Tailored Stroke Assessment & Treatment Workflow System
+# StrokeTriage: A Django-based Clinical Decision Support Tool for Acute Stroke
+
+**Version:** 1.0.0
 
 A comprehensive web application built with Django to assist healthcare providers in making timely decisions for stroke patients based on established medical guidelines. This system guides users through patient information collection, neurological assessments, imaging findings, and provides treatment recommendations.
 
