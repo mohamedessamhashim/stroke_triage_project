@@ -149,6 +149,6 @@ This project is licensed under the MIT License.
 
 ## Contact
 
-Mohamed Essam Hashim, M.B.B.S. - hashim@hashimlab.com
+Mohamed Essam Hashim, M.B.B.S. - mohamed@craniolabs.tech
 
 
